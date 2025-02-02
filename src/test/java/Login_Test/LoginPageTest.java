@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -33,6 +34,7 @@ public class LoginPageTest extends BaseClass {
 	YourInfo information;
 	overviews overview;
 	CompletePage complete;
+	int TCID;
 	
    @BeforeClass
 	public void OpenBrowser() throws InterruptedException {
@@ -60,6 +62,7 @@ public class LoginPageTest extends BaseClass {
 	
    @Test
 	public void ClickOnBtn() throws EncryptedDocumentException, IOException, InterruptedException {
+		 TCID=101;
 		product.AddCart();
 		Thread.sleep(2000);
 		product.ShowCartBtn();
@@ -84,8 +87,15 @@ public class LoginPageTest extends BaseClass {
 	}	
 	
    @AfterMethod
-	public void LogOutApp() throws InterruptedException {
-		home.MenuBtn();
+	public void LogOutApp(ITestResult S1) throws InterruptedException, IOException {
+		
+	   if(S1.getStatus()==ITestResult.FAILURE) 
+		{
+			UtilityClass.getScreenshot(driver, TCID);
+		}
+	   
+	   
+	    home.MenuBtn();
 		home.LogoutBtn();
 		Thread.sleep(2000);
 		
